@@ -1,0 +1,1 @@
+connStr := "user=postgres password=ambar1127 dbname=hamburgueseria_db sslmode=disable"
