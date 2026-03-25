@@ -1,19 +1,14 @@
-# 🍔 Hamburguesería DB
+# 🍔 Hamburguesería DB + API
 
-Proyecto simple de base de datos desarrollado en PostgreSQL para la gestión de pedidos de una hamburguesería. Incluye diseño relacional, funciones SQL y una integración básica con Go.
+Proyecto backend desarrollado en **PostgreSQL + Go**, que simula la gestión de pedidos de una hamburguesería. Incluye diseño de base de datos relacional y una API REST para consultar información.
 
 ---
 
 ## 📌 Descripción
 
-Este proyecto simula el funcionamiento de un sistema de pedidos, permitiendo gestionar clientes, productos, pedidos y sus detalles.
+Este proyecto implementa un sistema simple de pedidos, permitiendo gestionar clientes, productos y ventas.
 
-El objetivo es aplicar conceptos fundamentales de bases de datos relacionales como:
-
-* claves primarias y foráneas
-* normalización básica
-* consultas SQL
-* funciones en PostgreSQL
+Además, expone una API desarrollada en Go que permite acceder a los datos mediante endpoints HTTP.
 
 ---
 
@@ -21,82 +16,148 @@ El objetivo es aplicar conceptos fundamentales de bases de datos relacionales co
 
 * PostgreSQL
 * SQL (DDL, DML, funciones)
-* Go (integración con base de datos)
+* Go (Golang)
+* JSON / HTTP
 
 ---
 
-## 🧱 Estructura de la base de datos
-
-El sistema está compuesto por las siguientes tablas:
-
-* **cliente** → información de los clientes
-* **producto** → productos disponibles (hamburguesas, combos, etc.)
-* **pedido** → pedidos realizados por los clientes
-* **detalle_pedido** → productos incluidos en cada pedido
-
----
-
-## ⚙️ Funcionalidades
-
-* Registro de clientes
-* Gestión de productos
-* Creación de pedidos
-* Asociación de productos a pedidos
-* Cálculo del total vendido por día mediante función SQL
-
----
-
-## 📊 Función destacada
-
-### total_vendido(fecha)
-
-Calcula el total de ventas realizadas en una fecha específica.
-
-```sql
-select total_vendido('2026-03-19');
-```
-
----
-
-## 📂 Estructura del proyecto
+## 🧱 Estructura del proyecto
 
 ```
 hamburgueseria-db/
 │
 ├── sql/
 │   ├── schema.sql
+│   ├── create_db.sql
+│   ├── create_pk_fk.sql
+│   ├── drop_pk_fk.sql
 │   ├── inserts.sql
 │   ├── queries.sql
+│   └── total_vendido.sql
 │
 ├── go-app/
-│   └── main.go
+│   ├── main.go
+│   ├── db.go
+│   ├── handlers.go
+│   ├── models.go
 │
 └── README.md
 ```
 
 ---
 
-## 🚀 Cómo ejecutar
+## ⚙️ Base de datos
 
-1. Crear la base de datos en PostgreSQL
-2. Ejecutar el archivo `schema.sql`
-3. Insertar datos con `inserts.sql`
-4. Ejecutar consultas o funciones desde `queries.sql`
+El sistema está compuesto por las siguientes tablas:
+
+* **cliente** → información de clientes
+* **producto** → productos disponibles
+* **pedido** → pedidos realizados
+* **detalle_pedido** → productos por pedido
+
+Incluye:
+
+* claves primarias y foráneas
+* restricciones
+* función `total_vendido(fecha)`
 
 ---
 
-## 🔗 Integración con Go
+## 🌐 API REST
 
-El proyecto incluye un ejemplo básico de conexión a PostgreSQL utilizando Go, permitiendo ejecutar consultas y obtener resultados desde una aplicación.
+La API permite consultar datos desde la base de datos.
+
+### ▶️ Ejecutar
+
+```bash
+cd go-app
+go run .
+```
+
+Servidor disponible en:
+
+```
+http://localhost:8080
+```
 
 ---
 
-## 📈 Posibles mejoras
+## 📡 Endpoints
 
-* Implementar API REST en Go
-* Agregar control de stock
-* Incorporar autenticación de usuarios
-* Optimizar consultas utilizando JOINs
+### 🔹 Obtener productos
+
+```
+GET /productos
+```
+
+Respuesta:
+
+```json
+[
+  {
+    "id": 1,
+    "nombre": "hamburguesa simple",
+    "precio": 2500
+  }
+]
+```
+
+---
+
+## 🔌 Conexión a base de datos
+
+Configurada en `db.go`:
+
+```go
+connStr := "user=postgres password=TU_PASSWORD dbname=hamburgueseria_db sslmode=disable"
+```
+
+---
+
+## 🚀 Cómo usar el proyecto
+
+1. Crear base de datos:
+
+```sql
+create database hamburgueseria_db;
+```
+
+2. Ejecutar:
+
+* `schema.sql`
+* `create_pk_fk.sql`
+* `inserts.sql`
+
+3. Ejecutar la API:
+
+```bash
+go run .
+```
+
+4. Probar en navegador:
+
+```
+http://localhost:8080/productos
+```
+
+---
+
+## 📈 Funcionalidades
+
+* Diseño de base de datos relacional
+* Inserción y consulta de datos
+* Función SQL para cálculo de ventas
+* API REST en Go
+* Serialización a JSON
+
+---
+
+## 🔮 Posibles mejoras
+
+* Endpoint para calcular total vendido por fecha
+* Creación de pedidos desde la API
+* Validaciones y manejo de errores avanzado
+* Uso de router (gorilla/mux)
 
 ---
 

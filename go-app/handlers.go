@@ -6,7 +6,7 @@ import (
 )
 
 func obtenerProductos(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query("select id_producto, nombre, precio from producto")
+	rows, err := db.Query("select id_producto, nombre, precio from producto") //peticion en sql
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
